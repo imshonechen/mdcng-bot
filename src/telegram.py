@@ -37,12 +37,20 @@ async def send_notification(bot_token: str, chat_id: str, data: dict) -> None:
     thumb = data.get("thumb", "")
 
     if thumb:
-        await bot.send_photo(
-            chat_id=chat_id,
-            photo=thumb,
-            caption=caption,
-            parse_mode="HTML",
-        )
+        try:
+            await bot.send_photo(
+                chat_id=chat_id,
+                photo=thumb,
+                caption=caption,
+                parse_mode="HTML",
+            )
+        except telegram.error.BadRequest:
+            logger.warning("封面图发送失败，降级为纯文本: %s", thumb)
+            await bot.send_message(
+                chat_id=chat_id,
+                text=caption,
+                parse_mode="HTML",
+            )
     else:
         await bot.send_message(
             chat_id=chat_id,
