@@ -1,5 +1,6 @@
 services:
   mdcng-bot:
+    image: ghcr.io/imshonechen/mdcng-bot:latest
     build: .
     container_name: mdcng-bot
     restart: unless-stopped
