@@ -5,18 +5,25 @@
 **通知效果：**
 
 ```
-┌──────────────────────┐
-│      [封面图片]       │
-│                      │
-│ 番号: ABC-001        │
-│ 标题: 示例标题        │
-│ 演员: 演员A, 演员B   │
-│ 发行日期: 2025年3月15日│
-│ 简介: 这是一段简介... │
-│ 片长: 120分钟         │
-│ 分类: 有码            │
-│ 系列: 某系列          │
-└──────────────────────┘
+┌──────────────────────────┐
+│       [封面图片]          │
+│                          │
+│ [ 刮削成功 ]              │
+│ 番号: ABC-001            │
+│ 标题: 示例标题            │
+│ 演员: 演员A, 演员B       │
+│ 发行日期: 2025年3月15日   │
+│ 简介: 这是一段简介...     │
+│ 片长: 120分钟             │
+│ 分类: 有码                │
+│ 系列: 某系列              │
+│ 标签: 标签1, 标签2        │
+│                          │
+│ 任务ID: abc-123           │
+│ 开始时间: 2025年3月15日 14:30:00 │
+│ 结束时间: 2025年3月15日 14:30:05 │
+│ 耗时: 5秒                 │
+└──────────────────────────┘
 ```
 
 ## 快速开始
@@ -100,7 +107,7 @@ docker compose up -d
 |------|------|
 | Request Method | `POST` |
 | URL | `http://<服务器IP>:5000/webhook` |
-| 触发事件 | `finished` |
+| 触发事件 | `finished` + `failed` |
 | Headers | `Content-Type: application/json` |
 
 Body 模板：
@@ -116,7 +123,13 @@ Body 模板：
     "runtime": "{{ runtime }}",
     "category": "{{ category }}",
     "series": "{{ series }}",
-    "thumb": "{{ thumb }}"
+    "tags": "{{ tags }}",
+    "thumb": "{{ thumb }}",
+    "task_id": "{{ task_id }}",
+    "duration": "{{ duration }}",
+    "started_at": "{{ started_at }}",
+    "timestamp": "{{ timestamp }}",
+    "error_message": "{{ error_message }}"
 }
 ```
 
@@ -137,7 +150,13 @@ curl -X POST http://localhost:5000/webhook \
     "runtime": "120",
     "category": "有码",
     "series": "某系列",
-    "thumb": "https://via.placeholder.com/300x400"
+    "tags": "标签1, 标签2",
+    "thumb": "https://via.placeholder.com/300x400",
+    "task_id": "abc-123",
+    "duration": "5",
+    "started_at": "2025-03-15T14:30:00",
+    "timestamp": "2025-03-15T14:30:05",
+    "error_message": ""
   }'
 ```
 

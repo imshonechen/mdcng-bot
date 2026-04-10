@@ -24,8 +24,8 @@ def handle_webhook():
         return jsonify({"ok": False, "message": "请求体不是有效的 JSON 格式"}), 400
 
     event = data.get("event", "")
-    if event != "finished":
-        return jsonify({"ok": False, "message": f"已忽略事件类型: {event}，仅处理 finished"}), 400
+    if event not in ("finished", "failed"):
+        return jsonify({"ok": False, "message": f"已忽略事件类型: {event}，仅处理 finished 和 failed"}), 400
 
     bot_token = webhook_bp.config["BOT_TOKEN"]
     chat_id = webhook_bp.config["CHAT_ID"]

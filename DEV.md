@@ -93,7 +93,13 @@ mdcng-bot/
     "runtime": "{{ runtime }}",
     "category": "{{ category }}",
     "series": "{{ series }}",
-    "thumb": "{{ thumb }}"
+    "tags": "{{ tags }}",
+    "thumb": "{{ thumb }}",
+    "task_id": "{{ task_id }}",
+    "duration": "{{ duration }}",
+    "started_at": "{{ started_at }}",
+    "timestamp": "{{ timestamp }}",
+    "error_message": "{{ error_message }}"
 }
 ```
 

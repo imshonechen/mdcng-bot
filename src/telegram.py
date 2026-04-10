@@ -1,15 +1,23 @@
 import logging
 import telegram
 
-from .utils import format_date, truncate
+from .utils import format_date, format_datetime, truncate
 
 logger = logging.getLogger(__name__)
 
 
 def format_caption(data: dict) -> str:
     """根据刮削数据构建 Telegram 消息文本"""
+    event = data.get("event", "finished")
     lines = []
 
+    # 状态标识
+    if event == "failed":
+        lines.append("<b>[ 刮削失败 ]</b>")
+    else:
+        lines.append("<b>[ 刮削成功 ]</b>")
+
+    # 影片信息
     if data.get("number"):
         lines.append(f"<b>番号:</b> {data['number']}")
     if data.get("title"):
@@ -26,6 +34,23 @@ def format_caption(data: dict) -> str:
         lines.append(f"<b>分类:</b> {data['category']}")
     if data.get("series"):
         lines.append(f"<b>系列:</b> {data['series']}")
+    if data.get("tags"):
+        lines.append(f"<b>标签:</b> {data['tags']}")
+
+    # 任务信息
+    lines.append("")
+    if data.get("task_id"):
+        lines.append(f"<b>任务ID:</b> {data['task_id']}")
+    if data.get("started_at"):
+        lines.append(f"<b>开始时间:</b> {format_datetime(data['started_at'])}")
+    if data.get("timestamp"):
+        lines.append(f"<b>结束时间:</b> {format_datetime(data['timestamp'])}")
+    if data.get("duration"):
+        lines.append(f"<b>耗时:</b> {data['duration']}秒")
+
+    # 失败原因
+    if event == "failed" and data.get("error_message"):
+        lines.append(f"\n<b>失败原因:</b> {data['error_message']}")
 
     return "\n".join(lines)
 
