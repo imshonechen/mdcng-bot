@@ -51,19 +51,46 @@ PORT=5000                          # 监听端口（可选，默认 5000）
 
 ### 4. 启动
 
-**直接运行：**
-
 ```bash
 python -m src.app
 ```
 
-**Docker Compose：**
+服务将监听 `0.0.0.0:5000`。
+
+## Docker 部署
+
+### 方式一：从源码构建
+
+```bash
+git clone https://github.com/imshonechen/mdcng-bot.git
+cd mdcng-bot
+cp .env.example .env
+# 编辑 .env 填入 BOT_TOKEN 和 CHAT_ID
+docker compose up -d
+```
+
+### 方式二：使用 GHCR 镜像
+
+无需克隆仓库，创建一个 `docker-compose.yml`：
+
+```yaml
+services:
+  mdcng-bot:
+    image: ghcr.io/imshonechen/mdcng-bot:latest
+    container_name: mdcng-bot
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      - BOT_TOKEN=你的Token
+      - CHAT_ID=你的ChatID
+```
+
+然后启动：
 
 ```bash
 docker compose up -d
 ```
-
-服务将监听 `0.0.0.0:5000`。
 
 ## MDCNG Webhook 配置
 
