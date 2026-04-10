@@ -10,6 +10,11 @@ logger = logging.getLogger(__name__)
 webhook_bp = Blueprint("webhook", __name__)
 
 
+@webhook_bp.route("/webhook", methods=["GET"])
+def health_check():
+    return jsonify({"ok": True, "message": "mdcng-bot 运行中"}), 200
+
+
 @webhook_bp.route("/webhook", methods=["POST"])
 def handle_webhook():
     data = request.get_json(silent=True)
